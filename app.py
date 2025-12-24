@@ -7,35 +7,8 @@ import pandas as pd
 
 from collector import run_collection, read_recent_events
 from analyzer import analyze_all_events
-import os
 
-def check_password():
-    if "authenticated" not in st.session_state:
-        st.session_state.authenticated = False
-
-    if st.session_state.authenticated:
-        return True
-
-    st.title("Acceso protegido")
-
-    password = st.text_input(
-        "Introduce la contraseña",
-        type="password"
-    )
-
-    if password:
-        correct_password = os.environ.get("STREAMLIT_PASSWORD", "")
-        if password == correct_password:
-            st.session_state.authenticated = True
-            st.rerun()
-        else:
-            st.error("Contraseña incorrecta")
-
-    return False
-
-
-if not check_password():
-    st.stop()
+ 
 
 
 COMPANIES_PATH = Path("companies.json")
