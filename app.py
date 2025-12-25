@@ -190,7 +190,7 @@ fig.update_layout(
 
 calle.plotly_chart(fig, use_container_width=True)
 
-    col1, col2 = st.columns([1, 1])
+col1, col2 = st.columns([1, 1])
     with col1:
         if st.button("Ejecutar búsqueda (todas las empresas)"):
             hits = run_collection()
