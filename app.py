@@ -127,19 +127,12 @@ with tab1:
 with tab2:
     st.subheader("Buscar noticias y analizar")
     st.write("Primero recoge noticias. Luego pulsa analizar para que aparezcan cronograma e importancia.")
-with tab2:
-    st.subheader("Buscar noticias y analizar")
-    st.write("Primero recoge noticias. Luego pulsa analizar para que aparezcan cronograma e importancia.")
 
-    col1, col2 = st.columns([1, 1])
-
-    with col1:
-        st.write("Columna izquierda")
-
-    with col2:
-        st.write("Columna derecha")
+    st.subheader("Cronograma de eventos")
+    st.info("Cronograma cargado correctamente (versión inicial).")
 
 
+   
 import pandas as pd
 import plotly.express as px
 
@@ -203,34 +196,8 @@ fig.update_layout(
 
 calle.plotly_chart(fig, use_container_width=True)
 
-col1, col2 = st.columns([1, 1])
-    with col1:
-        if st.button("Ejecutar búsqueda (todas las empresas)"):
-            hits = run_collection()
-            if not hits:
-                st.info("No hay alertas nuevas.")
-            else:
-                st.success(f"Alertas nuevas: {len(hits)}")
-                for h in hits[:50]:
-                    st.markdown(f"- **{h['company']}**: [{h['title']}]({h['link']})")
-    with col2:
-        if st.button("Analizar (importancia, categorías, catalizadores)"):
-            analyze_all_events()
-            st.success("Análisis completado. Ve a Cronograma y Catalizadores.")
-
-    st.divider()
-    st.subheader("Últimas alertas guardadas")
-    rows = read_recent_events(limit=100)
-    if not rows:
-        st.info("Aún no hay alertas.")
-    else:
-        for (eid, company, title, link, source_url, published, detected_ts) in rows[:30]:
-            st.markdown(
-                f"- **{company}**: [{title}]({link})  \n"
-                f"  Fuente: {source_url}  \n"
-                f"  Publicado: {published}  \n"
-                f"  Detectado: {detected_ts}"
-            )
+    
+   
 
 with tab3:
     st.subheader("Cronograma (por meses) con importancia")
