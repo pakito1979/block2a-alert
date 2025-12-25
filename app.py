@@ -133,71 +133,7 @@ with tab2:
 
 
    
-import pandas as pd
-import plotly.express as px
 
-st.subheader("Cronograma de eventos")
-
-# Datos de ejemplo (luego se conectan a tus alertas reales)
-eventos = [
-    {
-        "Evento": "Descubrimiento pozo",
-        "Inicio": "2022-03-10",
-        "Fin": "2022-03-10",
-        "Importancia": "Alta",
-        "Tipo": "Drilling"
-    },
-    {
-        "Evento": "Licencia aprobada",
-        "Inicio": "2022-06-01",
-        "Fin": "2022-06-01",
-        "Importancia": "Media",
-        "Tipo": "Regulatorio"
-    },
-    {
-        "Evento": "Resultados financieros",
-        "Inicio": "2023-10-15",
-        "Fin": "2023-10-15",
-        "Importancia": "Alta",
-        "Tipo": "Financiero"
-    },
-    {
-        "Evento": "Nota de prensa menor",
-        "Inicio": "2024-02-01",
-        "Fin": "2024-02-01",
-        "Importancia": "Baja",
-        "Tipo": "News"
-    }
-]
-
-df = pd.DataFrame(eventos)
-df["Inicio"] = pd.to_datetime(df["Inicio"])
-df["Fin"] = pd.to_datetime(df["Fin"])
-
-fig = px.timeline(
-    df,
-    x_start="Inicio",
-    x_end="Fin",
-    y="Evento",
-    color="Importancia",
-    color_discrete_map={
-        "Alta": "red",
-        "Media": "orange",
-        "Baja": "green"
-    },
-    hover_data=["Tipo"]
-)
-
-fig.update_layout(
-    height=500,
-    xaxis_title="Fecha",
-    yaxis_title="Evento"
-)
-
-st.plotly_chart((fig, use_container_width=True)
-
-    
-   
 
 with tab3:
     st.subheader("Cronograma (por meses) con importancia")
