@@ -136,7 +136,7 @@ with tab2:
 import pandas as pd
 import plotly.express as px
 
-calle.subtítulo("Cronograma de eventos")
+st.subheader("Cronograma de eventos")
 
 # Datos de ejemplo (luego se conectan a tus alertas reales)
 eventos = [
@@ -194,7 +194,7 @@ fig.update_layout(
     yaxis_title="Evento"
 )
 
-calle.plotly_chart(fig, use_container_width=True)
+st.plotly_chart((fig, use_container_width=True)
 
     
    
