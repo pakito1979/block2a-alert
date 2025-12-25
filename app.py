@@ -4,6 +4,8 @@ import json
 from pathlib import Path
 import streamlit as st
 import pandas as pd
+import plotly.express as px
+
 
 from collector import run_collection, read_recent_events
 from analyzer import analyze_all_events
@@ -138,6 +140,62 @@ with tab2:
 with tab3:
     st.subheader("Cronograma (por meses) con importancia")
     analyze_hint = st.caption("Si esto sale vacío, ve a Buscar y pulsa Analizar.")
+import pandas as pd
+import plotly.express as px
+import sqlite3
+
+con = sqlite3.connect("alertas.db")
+
+query = """
+SELECT
+    company,
+    title,
+    confidence,
+    created_ts
+FROM alerts
+WHERE created_ts IS NOT NULL
+ORDER BY created_ts ASC
+"""
+
+df = pd.read_sql_query(query, con)
+con.close()
+
+if df.empty:
+    st.warning("No hay alertas todavía para mostrar en el cronograma.")
+else:
+    df["created_ts"] = pd.to_datetime(df["created_ts"])
+
+    def importancia(conf):
+        if conf >= 4:
+            return "Alta"
+        elif conf == 3:
+            return "Media"
+        else:
+            return "Baja"
+
+    df["Importancia"] = df["confidence"].apply(importancia)
+
+    fig = px.timeline(
+        df,
+        x_start="created_ts",
+        x_end="created_ts",
+        y="title",
+        color="Importancia",
+        color_discrete_map={
+            "Alta": "red",
+            "Media": "orange",
+            "Baja": "green"
+        },
+        hover_data=["company"]
+    )
+
+    fig.update_layout(
+        height=600,
+        xaxis_title="Fecha",
+        yaxis_title="Evento"
+    )
+
+    st.plotly_chart(fig, use_container_width=True)
 
     con = db_connect()
     q = """
