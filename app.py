@@ -132,6 +132,13 @@ with tab2:
 
     st.subheader("Cronograma de eventos")
     st.info("Cronograma cargado correctamente (versión inicial).")
+st.divider()
+
+if st.button("Ejecutar búsqueda"):
+    st.info("Búsqueda ejecutada (placeholder).")
+
+if st.button("Analizar (importancia, categorías, catalizadores)"):
+    st.success("Análisis ejecutado. Ahora ve a Cronograma.")
 
 
    
