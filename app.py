@@ -1,3 +1,4 @@
+from analizador import analyze_all_events
 
 
 
@@ -141,7 +142,8 @@ if st.button("Ejecutar búsqueda"):
     st.info("Búsqueda ejecutada (placeholder).")
 
 if st.button("Analizar (importancia, categorías, catalizadores)"):
-    resultados = analizar_todos_los_eventos()
+    resultados = analyze_all_events()
+
 
     eventos_crono = []
 
