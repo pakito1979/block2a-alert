@@ -1,30 +1,21 @@
 import sys
-import importlib.util
+import streamlit as st
 from pathlib import Path
+import importlib.util
 
-ROOT = Path(__file__).resolve().parent
-
-
-def _import_from_file(module_name: str, file_path: Path):
+def load_module_from_file(file_path: Path, module_name: str = "aplicacion"):
     spec = importlib.util.spec_from_file_location(module_name, str(file_path))
-    if spec is None or spec.loader is None:
-        raise ImportError(f"No pude cargar el módulo desde: {file_path}")
-    mod = importlib.util.module_from_spec(spec)
-    sys.modules[module_name] = mod
-    spec.loader.exec_module(mod)
-    return mod
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
+    spec.loader.exec_module(module)
+    return module
 
+candidates = [Path("aplicacion.py"), Path("aplicación.py")]
 
-# 1) Preferimos aplicacion.py (sin tilde)
-if (ROOT / "aplicacion.py").exists():
-    _import_from_file("aplicacion", ROOT / "aplicacion.py")
+for p in candidates:
+    if p.exists():
+        load_module_from_file(p, "aplicacion")
+        st.stop()
 
-# 2) Si no existe, probamos aplicación.py (con tilde)
-elif (ROOT / "aplicación.py").exists():
-    _import_from_file("aplicacion", ROOT / "aplicación.py")
-
-# 3) Si no existe ninguno, mostramos error en la app
-else:
-    import streamlit as st
-    st.error("No encuentro 'aplicacion.py' ni 'aplicación.py' en el repositorio.")
-
+st.error("No encuentro 'aplicacion.py' ni 'aplicación.py' en el repositorio.")
+st.stop()
