@@ -3,6 +3,7 @@
 import json
 from pathlib import Path
 import json
+from pathlib import Path
 from datetime import datetime
 
 CRONO_PATH = Path("cronograma.json")
@@ -26,6 +27,7 @@ import json
 from pathlib import Path
 import json
 from datetime import datetime
+from pathlib import Path
 
 CRONO_PATH = Path("cronograma.json")
 
@@ -45,6 +47,7 @@ from datetime import datetime
 from pathlib import Path
 import json
 from datetime import datetime
+from pathlib import Path
 
 CRONO_PATH = Path("cronograma.json")
 
@@ -79,6 +82,7 @@ import pandas as pd
 from pathlib import Path
 import json
 from datetime import datetime
+from pathlib import Path
 
 CRONO_PATH = Path("cronograma.json")
 
@@ -98,6 +102,7 @@ import plotly.express as px
 from pathlib import Path
 import json
 from datetime import datetime
+from pathlib import Path
 
 CRONO_PATH = Path("cronograma.json")
 
@@ -119,6 +124,7 @@ from collector import run_collection, read_recent_events
 from pathlib import Path
 import json
 from datetime import datetime
+from pathlib import Path
 
 CRONO_PATH = Path("cronograma.json")
 
@@ -138,6 +144,7 @@ from analyzer import analyze_all_events
 from pathlib import Path
 import json
 from datetime import datetime
+from pathlib import Path
 
 CRONO_PATH = Path("cronograma.json")
 
