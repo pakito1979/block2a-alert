@@ -138,102 +138,34 @@ with tab2:
 
 
 with tab3:
-    st.subheader("Cronograma (por meses) con importancia")
-    analyze_hint = st.caption("Si esto sale vacío, ve a Buscar y pulsa Analizar.")
-import pandas as pd
-import plotly.express as px
-import sqlite3
+    st.subheader("Diagnóstico base de datos (cronograma)")
 
-con = sqlite3.connect("alertas.db")
+    import sqlite3
+    import pandas as pd
 
-query = """
-SELECT
-    company,
-    title,
-    confidence,
-    created_ts
-FROM alerts
-WHERE created_ts IS NOT NULL
-ORDER BY created_ts ASC
-"""
+    con = sqlite3.connect("alertas.db")
 
-df = pd.read_sql_query(query, con)
-con.close()
-
-if df.empty:
-    st.warning("No hay alertas todavía para mostrar en el cronograma.")
-else:
-    df["created_ts"] = pd.to_datetime(df["created_ts"])
-
-    def importancia(conf):
-        if conf >= 4:
-            return "Alta"
-        elif conf == 3:
-            return "Media"
-        else:
-            return "Baja"
-
-    df["Importancia"] = df["confidence"].apply(importancia)
-
-    fig = px.timeline(
-        df,
-        x_start="created_ts",
-        x_end="created_ts",
-        y="title",
-        color="Importancia",
-        color_discrete_map={
-            "Alta": "red",
-            "Media": "orange",
-            "Baja": "green"
-        },
-        hover_data=["company"]
+    tablas = pd.read_sql_query(
+        "SELECT name FROM sqlite_master WHERE type='table';",
+        con
     )
 
-    fig.update_layout(
-        height=600,
-        xaxis_title="Fecha",
-        yaxis_title="Evento"
-    )
+    st.write("Tablas en la base de datos:")
+    st.dataframe(tablas)
 
-    st.plotly_chart(fig, use_container_width=True)
+    if not tablas.empty:
+        tabla = tablas.iloc[0]["name"]
+        st.write(f"Ejemplo de datos de la tabla: {tabla}")
 
-    con = db_connect()
-    q = """
-    SELECT e.company, e.title, e.link, e.published, e.detected_ts,
-           a.category, a.importance, a.milestone_type
-    FROM events e
-    LEFT JOIN event_analysis a ON a.id = e.id
-    ORDER BY e.detected_ts DESC
-    """
-    df = pd.read_sql_query(q, con)
+        ejemplo = pd.read_sql_query(
+            f"SELECT * FROM {tabla} LIMIT 5",
+            con
+        )
+        st.dataframe(ejemplo)
+
     con.close()
 
-    if df.empty:
-        st.info("No hay eventos todavía.")
-    else:
-        companies_list = ["(Todas)"] + sorted(df["company"].dropna().unique().tolist())
-        csel = st.selectbox("Empresa", companies_list)
-
-        if csel != "(Todas)":
-            df = df[df["company"] == csel]
-
-        df["month"] = df["detected_ts"].astype(str).str.slice(0, 7)
-
-        order = st.selectbox("Orden", ["Más recientes", "Mayor importancia"])
-        if order == "Mayor importancia":
-            df = df.sort_values(by=["importance", "detected_ts"], ascending=[False, False])
-
-        months = sorted(df["month"].dropna().unique().tolist(), reverse=True)
-        for m in months[:24]:
-            st.markdown(f"### {m}")
-            block = df[df["month"] == m].head(50)
-            for _, r in block.iterrows():
-                imp = int(r["importance"]) if str(r["importance"]).isdigit() else 0
-                cat = r["category"] if pd.notna(r["category"]) else "No analizado"
-                ms = r["milestone_type"] if pd.notna(r["milestone_type"]) else ""
-                badge = "🔥" if imp >= 5 else "🟠" if imp == 4 else "🟡" if imp == 3 else "⚪"
-                st.markdown(f"- {badge} **{r['company']}** [{r['title']}]({r['link']})  \n  {cat} | imp {imp}/5 | {ms}")
-
+   
 with tab4:
     st.subheader("Catalizadores probables")
     st.caption("Se generan con reglas simples a partir de titulares. Luego lo afinamos por empresa.")
