@@ -2,13 +2,156 @@
 
 import json
 from pathlib import Path
+import json
+from datetime import datetime
+
+CRONO_PATH = Path("cronograma.json")
+
+def guardar_eventos_cronograma(eventos):
+    if CRONO_PATH.exists():
+        with open(CRONO_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    else:
+        data = []
+
+    data.extend(eventos)
+
+    with open(CRONO_PATH, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+from pathlib import Path
 import streamlit as st
+from pathlib import Path
+import json
+from pathlib import Path
+import json
+from datetime import datetime
+
+CRONO_PATH = Path("cronograma.json")
+
+def guardar_eventos_cronograma(eventos):
+    if CRONO_PATH.exists():
+        with open(CRONO_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    else:
+        data = []
+
+    data.extend(eventos)
+
+    with open(CRONO_PATH, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+from datetime import datetime
+from pathlib import Path
+import json
+from datetime import datetime
+
+CRONO_PATH = Path("cronograma.json")
+
+def guardar_eventos_cronograma(eventos):
+    if CRONO_PATH.exists():
+        with open(CRONO_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    else:
+        data = []
+
+    data.extend(eventos)
+
+    with open(CRONO_PATH, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+CRONO_PATH = Path("cronograma.json")
+
+def guardar_eventos_cronograma(eventos):
+    if CRONO_PATH.exists():
+        with open(CRONO_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    else:
+        data = []
+
+    data.extend(eventos)
+
+    with open(CRONO_PATH, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
 import pandas as pd
+from pathlib import Path
+import json
+from datetime import datetime
+
+CRONO_PATH = Path("cronograma.json")
+
+def guardar_eventos_cronograma(eventos):
+    if CRONO_PATH.exists():
+        with open(CRONO_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    else:
+        data = []
+
+    data.extend(eventos)
+
+    with open(CRONO_PATH, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
 import plotly.express as px
+from pathlib import Path
+import json
+from datetime import datetime
+
+CRONO_PATH = Path("cronograma.json")
+
+def guardar_eventos_cronograma(eventos):
+    if CRONO_PATH.exists():
+        with open(CRONO_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    else:
+        data = []
+
+    data.extend(eventos)
+
+    with open(CRONO_PATH, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
 
 
 from collector import run_collection, read_recent_events
+from pathlib import Path
+import json
+from datetime import datetime
+
+CRONO_PATH = Path("cronograma.json")
+
+def guardar_eventos_cronograma(eventos):
+    if CRONO_PATH.exists():
+        with open(CRONO_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    else:
+        data = []
+
+    data.extend(eventos)
+
+    with open(CRONO_PATH, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
 from analyzer import analyze_all_events
+from pathlib import Path
+import json
+from datetime import datetime
+
+CRONO_PATH = Path("cronograma.json")
+
+def guardar_eventos_cronograma(eventos):
+    if CRONO_PATH.exists():
+        with open(CRONO_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    else:
+        data = []
+
+    data.extend(eventos)
+
+    with open(CRONO_PATH, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
 
  
 
@@ -138,7 +281,22 @@ if st.button("Ejecutar búsqueda"):
     st.info("Búsqueda ejecutada (placeholder).")
 
 if st.button("Analizar (importancia, categorías, catalizadores)"):
-    st.success("Análisis ejecutado. Ahora ve a Cronograma.")
+    resultados = analizar_todos_los_eventos()
+
+    eventos_crono = []
+
+    for r in resultados:
+        eventos_crono.append({
+            "empresa": r.get("company"),
+            "evento": r.get("title"),
+            "fecha": r.get("created_ts") or datetime.utcnow().isoformat(),
+            "importancia": r.get("confidence", 1)
+        })
+
+    guardar_eventos_cronograma(eventos_crono)
+
+    st.success(f"Análisis completado. {len(eventos_crono)} eventos añadidos al cronograma.")
+
 
 
    
